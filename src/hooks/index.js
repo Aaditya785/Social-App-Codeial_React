@@ -3,12 +3,7 @@ import jwt from 'jwt-decode';
 
 import { AuthContext } from '../providers/AuthProvider';
 import { login as userLogin, register } from '../api';
-import {
-  setItemInLocalStorage,
-  LOCALSTORAGE_TOKEN_KEY,
-  removeItemFromLocalStorage,
-  getItemFromLocalStorage,
-} from '../utils';
+import { setItemInLocalStorage, LOCALSTORAGE_TOKEN_KEY, removeItemFromLocalStorage, getItemFromLocalStorage, } from '../utils';
 
 export const useAuth = () => {
   return useContext(AuthContext);
