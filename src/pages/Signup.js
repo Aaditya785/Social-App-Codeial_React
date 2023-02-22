@@ -1,17 +1,17 @@
 import { useState } from 'react';
-import toast from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
+import toast, {Toaster} from 'react-hot-toast';
+import { useNavigate, redirect } from 'react-router-dom';
 
 import { useAuth } from '../hooks';
 import styles from '../styles/login.module.css';
 
 const Signup = () => {
+  const auth = useAuth();
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [signingUp, setSigningUp] = useState('');
-  const auth = useAuth();
   const navigate = useNavigate();
 
   const handleFormSubmit = async (e) => {
@@ -47,6 +47,10 @@ const Signup = () => {
 
     setSigningUp(false);
   };
+
+  if(auth.user){
+    return redirect ("/");
+  }
 
   return (
     <form className={styles.loginForm} onSubmit={handleFormSubmit}>
@@ -93,6 +97,7 @@ const Signup = () => {
           {signingUp ? 'Signing up...' : 'Signup'}
         </button>
       </div>
+      <Toaster/>
     </form>
   );
 };

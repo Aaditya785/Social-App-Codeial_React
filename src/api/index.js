@@ -63,3 +63,16 @@ export const register = async (name, email, password, confirmPassword) => {
     body: { name, email, password, confirm_password: confirmPassword },
   });
 };
+
+export const editProfile = async (userId, email, password, confirmPassword) => {
+  return customFetch(API_URLS.editUser(), {
+    method: 'POST',
+    body: { id: userId, password, confirm_password: confirmPassword },
+  });
+};
+
+export const fetchUserProfile = (userId) => {
+  return customFetch(API_URLS.userInfo(userId), {
+    method: 'GET',
+  });
+};

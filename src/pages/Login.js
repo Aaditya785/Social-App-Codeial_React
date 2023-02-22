@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { redirect } from 'react-router-dom'
 
 import styles from '../styles/login.module.css';
 import { useAuth } from '../hooks';
@@ -29,6 +30,10 @@ const Login = () => {
 
     setLoggingIn(false);
   };
+
+  if(auth.user){
+    return redirect ("/");
+  }
 
   return (
     <form className={styles.loginForm} onSubmit={handleSubmit}>
