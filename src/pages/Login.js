@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
-import { redirect } from 'react-router-dom'
+import { Navigate } from 'react-router-dom'
+
 
 import styles from '../styles/login.module.css';
 import { useAuth } from '../hooks';
@@ -10,7 +11,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [loggingIn, setLoggingIn] = useState(false);
   const auth = useAuth();
-  console.log(auth);
+  console.log("From Login:=",auth);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,15 +25,16 @@ const Login = () => {
 
     if (response.success) {
       toast.success('You Successfully LoggedIn');
+
     } else {
-      return toast.error(response.message);
+       toast.error(response.message);
     }
 
     setLoggingIn(false);
   };
 
   if(auth.user){
-    return redirect ("/");
+    return <Navigate to="/"/>;
   }
 
   return (

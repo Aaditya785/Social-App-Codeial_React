@@ -1,60 +1,17 @@
-import { useParams, useNavigate } from 'react-router-dom';
-
-
-import { Loader } from '../components';
+import { useLocation } from 'react-router-dom';
 import styles from '../styles/settings.module.css';
-import { useAuth } from '../hooks';
-import { useEffect, useState } from 'react';
-import { fetchUserProfile } from '../api';
-import toast, {Toaster} from 'react-hot-toast';
+// import { useAuth } from '../hooks';
 
 const UserProfile = () => {
-  const [user, setUser] = useState({});
-  const [loading, setLoading] = useState(true);
-  const { userId } = useParams();
-  const navigate = useNavigate();
-  const auth = useAuth();
-
-  useEffect(() => {
-    const getUser = async () => {
-      const response = await fetchUserProfile(userId);
-
-      if (response.success) {
-        setUser(response.data.user);
-      } else {
-       toast.error(response.message);
-        return navigate(-1);
-      }
-
-      setLoading(false);
-    };
-
-    getUser();
-  }, [ userId, navigate ]);
-
-  if (loading) {
-    return <Loader />;
-  }
-
-  const checkIfUserIsAFriend = () => {
-    const friends = auth.user.friends;
-    console.log("Friends:",friends);
-
-    const friendIds = friends.map((friend) => friend.to_user._id);
-    const index = friendIds.indexOf(userId);
-
-    if (index !== -1) {
-      return true;
-    }
-
-    return false;
-  };
+  const location = useLocation();
+  console.log('The Location =',location);
+  const user = {};
 
   return (
     <div className={styles.settings}>
       <div className={styles.imgContainer}>
         <img
-          src="https://image.flaticon.com/icons/svg/2154/2154651.svg"
+          src="https://cdn-icons-png.flaticon.com/512/552/552721.png"
           alt=""
         />
       </div>
@@ -71,13 +28,10 @@ const UserProfile = () => {
       </div>
 
       <div className={styles.btnGrp}>
-        {checkIfUserIsAFriend() ? (
-          <button className={`button ${styles.saveBtn}`}>Remove friend</button>
-        ) : (
-          <button className={`button ${styles.saveBtn}`}>Add friend</button>
-        )}
+        <button className={`button ${styles.saveBtn}`}>Add friend</button>
+
+        <button className={`button ${styles.saveBtn}`}>Remove friend</button>
       </div>
-      <Toaster/>
     </div>
   );
 };

@@ -6,7 +6,7 @@ import { useState } from "react";
 const Settings = () => {
   const auth = useAuth();
   const [editMode, setEditMode] = useState(false);
-  const [name, setName] = useState( auth.user ?.name ? auth.user.name : "");
+  const [name, setName] = useState(auth.user?.name ? auth.user.name : "");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [savingForm, setSavingForm] = useState(false);
@@ -39,6 +39,7 @@ const Settings = () => {
     if(response.success){
       setEditMode(false);
       setSavingForm(false);
+      clearForm();
 
       return toast.success('User updated successfully');
     }else{
