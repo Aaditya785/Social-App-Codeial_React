@@ -7,7 +7,7 @@ import { Loader, Navbar } from './';
 
 function PrivateRoute({ user, redirectPath = '/login', children }) {
   // const auth = useAuth();
-  console.log("Setting/UserProfile",user);
+  // console.log("Setting/UserProfile",user);
 
     if (!user) {
       return <Navigate to={redirectPath} replace />;

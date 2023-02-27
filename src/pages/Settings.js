@@ -36,6 +36,8 @@ const Settings = () => {
 
     const response = await auth.updateUser(auth.user._id, name, password, confirmPassword);
 
+    console.log('settings response', response);
+
     if(response.success){
       setEditMode(false);
       setSavingForm(false);

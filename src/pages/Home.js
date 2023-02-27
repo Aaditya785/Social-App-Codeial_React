@@ -30,7 +30,7 @@ const Home = () => {
 
   return (
     <div className={styles.postsList}>
-      {console.log("post",posts)}
+      {/* {console.log("post",posts)} */}
       {posts.map((post) => (
         <div className={styles.postWrapper} key={`post-${post._id}`}>
           <div className={styles.postHeader}>
@@ -40,16 +40,8 @@ const Home = () => {
                 alt="user-pic"
               />
               <div>
-              <Link
-                  to={{
-                    pathname: `/user/${post.user._id}`,
-                    state: {
-                      user: post.user,
-                    },
-                  }}
-                  className={styles.postAuthor}
-                >
-                  {post.user.name}
+                <Link to={`/user/${post.user._id}`} state={{ user: post }} className={styles.postAuthor}>
+                {post.user.name}
                 </Link>
                 <span className={styles.postTime}>a minute ago</span>
               </div>
