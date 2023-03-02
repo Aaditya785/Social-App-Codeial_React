@@ -22,6 +22,8 @@ export const useProvideAuth = () => {
         const user = jwt(userToken);
         const response = await fetchUserFriends();
 
+        console.log("User Friends:", response)
+
         let friends = [];
 
         if(response.success){
@@ -106,6 +108,13 @@ export const useProvideAuth = () => {
         });
         return;
     }
+
+    const newFriends = user.friends.filter((f) => f.to_user._id !== friend.to_user._id);
+
+    setUser({
+      ...user,
+      friends: newFriends,
+    });
   };
 
   return {

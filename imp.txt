@@ -1,0 +1,5 @@
+  "homepage": "https://github.com/Aaditya785/Social-App-Codeial_React",
+
+
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",

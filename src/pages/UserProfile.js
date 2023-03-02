@@ -8,9 +8,10 @@ import { useAuth } from '../hooks';
 // import { useAuth } from '../hooks';
 
 const UserProfile = () => {
+  
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
-  const [requestInProgress, setrequestInProgress] = useState(false);
+  const [requestInProgress, setRequestInProgress] = useState(false);
   const  {userId}  = useParams();
   const navigate = useNavigate();
   const auth = useAuth();
@@ -19,8 +20,6 @@ const UserProfile = () => {
   useEffect( ()=>{
     const getUser = async ()=>{
       const response =  await fetchUserProfile(userId);
-
-      // console.log("This response is of fetchUserProfile:",response);  
 
       if(response.success){
         setUser(response.data.user);
@@ -38,52 +37,51 @@ const UserProfile = () => {
     return <Loader/>;
   }
 
-  const checkIfUserIsAFriend = ()=>{
+  const checkIfUserIsAFriend = () => {
     const friends = auth.user.friends;
-    console.log("friends",auth.user);
+
     const friendIds = friends.map((friend) => friend.to_user._id);
     const index = friendIds.indexOf(userId);
 
-    if(index !== -1 ){
+    if (index !== -1) {
       return true;
     }
+
     return false;
   };
 
   const handleRemoveFriendClick = async ()=>{
-    setrequestInProgress(true);
+    setRequestInProgress(true);
 
 
     const response = await removeFriend(userId);
 
     if(response.success){
-      const { friendships } = response.data;
+      const  friendship  = auth.user.friends.filter(friend => friend.to_user._id === userId);
 
-      auth.updateUserFriends(true, friendships);
+      auth.updateUserFriends(false, friendship[0]);
 
-      toast.success('Friend added Successfully!..')
+      toast.success('Friend Removed Successfully!..')
     }else{
       toast.error(response.message);
     }
-    setrequestInProgress(false);
+    setRequestInProgress(false);
   };
 
-  const handleAddFriendClick = async ()=>{
-    setrequestInProgress(true);
-
+  const handleAddFriendClick = async () => {
+    setRequestInProgress(true);
 
     const response = await addFriend(userId);
 
-    if(response.success){
-      const { friendships } = response.data;
+    if (response.success) {
+      const { friendship } = response.data;
 
-      auth.updateUserFriends(true, friendships);
-
-      toast.success('Friend added Successfully!..')
-    }else{
+      auth.updateUserFriends(true, friendship);
+      toast.success('Friend added successfully!')
+    } else {
       toast.error(response.message);
     }
-    setrequestInProgress(false);
+    setRequestInProgress(false);
   };
 
   return (
@@ -108,15 +106,15 @@ const UserProfile = () => {
 
       <div className={styles.btnGrp}>
 
-      {/* <button className={`button ${styles.saveBtn}`}>Remove friend</button>
-
-      <button className={`button ${styles.saveBtn}`}>Add friend</button> */}
-
 
         {checkIfUserIsAFriend() ? (
-          <button className={`button ${styles.saveBtn}`} onClick={handleRemoveFriendClick}>Remove friend</button>
+          <button className={`button ${styles.saveBtn}`} onClick={handleRemoveFriendClick}>
+            {requestInProgress ? 'Removing friend...' : 'Remove friend'}
+            </button>
         ) : (
-          <button className={`button ${styles.saveBtn}`} onClick={handleAddFriendClick} disabled={requestInProgress} > {requestInProgress ? 'Adding Friend...' : 'Add friend'} </button>
+          <button className={`button ${styles.saveBtn}`} onClick={handleAddFriendClick} disabled={requestInProgress} > 
+          {requestInProgress ? 'Adding Friend...' : 'Add friend'} 
+          </button>
         )
       }
 
